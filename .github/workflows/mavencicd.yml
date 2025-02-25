@@ -79,7 +79,7 @@ jobs:
           trivy image --format table -o trivy-image-report.html ${{secrets.DOCKERHUB_USERNAME}}/boardgame:${{github.sha}}
 
       - name: push docker image
-        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/boardgame:lastest
+        run: docker push spencerxxxwb/boardgame:lastest
       
   deploy-to-k8:
     needs: docker
