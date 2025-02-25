@@ -79,12 +79,6 @@ jobs:
       - name: push docker image
         run: docker push spencerxxxwb/boardgame:2 
       
-  # docker-run:
-  #   needs: docker
-  #   runs-on: self-hosted
-  #   steps:
-  #     - name: run-docker image on host
-  #       run: sudo docker run -d --name spencer -p 8080:8080 spencerxxxwb/boardgame:latest
   deplotoK8s:
     needs: docker
     runs-on: self-hosted
