@@ -77,32 +77,18 @@ jobs:
           trivy image --format table -o trivy-image-report.html spencerxxxwb/boardgame:latest
 
       - name: push docker image
-        run: docker push spencerxxxwb/boardgame:latest
+        run: docker push spencerxxxwb/boardgame:2 
       
   deplotoK8s:
     needs: docker
     runs-on: self-hosted
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Kubectl Action
+        uses: tale/kubectl-action@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+      - run: |
+            kubectl apply -f deployment-service.yaml -n webapps
+            kubectl get svc -n webapps
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-
-      - name: Update kubeconfig
-        run: |
-          aws eks update-kubeconfig --region us-east-1 --name devopsshack-cluster
-      - name: Replace Image Tag in Manifest
-        run: |
-          sed -i 's|IMAGE_PLACEHOLDER|spencerxxxwb/boardgame:latest|g' deployment-service.yaml
-      - name: deploy to k8s
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-        with:
-          args: apply -f deployment-service.yaml -n webapps
         
