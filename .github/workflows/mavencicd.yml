@@ -84,4 +84,4 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: run-docker image on host
-        run: sudo docker run -name spencer -p 8080:8080 spencerxxxwb/boardgame:latest
+        run: sudo docker run --name spencer -p 8080:8080 spencerxxxwb/boardgame:latest
