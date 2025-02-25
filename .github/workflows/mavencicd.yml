@@ -36,6 +36,7 @@ jobs:
 
   Sonar-scan-Quality-gate:
     runs-on: self-hosted
+    needs: [Fs-Scan] 
     steps:
       - name:  SonarQube Scan
         uses:  sonarsource/sonarqube-scan-action@master
