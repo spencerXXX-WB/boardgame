@@ -27,5 +27,11 @@ jobs:
         path: target/*.jar
 
     - name: FS scan
-      run: trivy fs --format table -o report-table.html .
+      run: |
+        trivy fs --format table -o report-table.html .
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
