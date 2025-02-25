@@ -24,8 +24,8 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: my-artifact
-        path: target/*jar
-        
+        path: target/*.jar
+
     - name: FS scan
       run: trivy fs --format table -o report-table.html .
 
