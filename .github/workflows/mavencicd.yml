@@ -79,7 +79,7 @@ jobs:
       - name: push docker image
         run: docker push spencerxxxwb/boardgame:2 
       
-  deplotoK8s:
+  deploy-to-k8:
     needs: docker
     runs-on: self-hosted
     steps:
