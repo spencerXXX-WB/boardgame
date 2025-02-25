@@ -83,9 +83,12 @@ jobs:
     needs: docker
     runs-on: self-hosted
     steps:
-      - name: deploy to cluster
-        uses: steebchen/kubectl@v2.0.0
-        with: # defaults to latest kubectl binary version
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: get ns 
+     - name: Kubectl Action
+       uses: tale/kubectl-action@v1
+       with:
+         base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+     - run: |
+         kubectl apply -f deployment-service.yaml -n webapps
+         kubectl get svc -n webapps
+
           
