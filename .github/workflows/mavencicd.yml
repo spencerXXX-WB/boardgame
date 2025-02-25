@@ -18,6 +18,8 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Install Maven
+      run: sudo apt update && sudo apt install maven -y
     - name: Build with Maven
       run: mvn package --file pom.xml
 
