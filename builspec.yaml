@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    #IMAGE_NAME: "my-maven-app"
+    DOCKER_HUB_REPO: "spencerxxxwb/mynavenapp"
+  secrets-manager:
+    DOCKER_HUB_PASSWORD: "docker-password:DOCKER_HUB_PASSWORD"
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+      #docker: 20
+    commands:
+      - echo "Installing Maven dependencies..."
+      - mvn clean install -DskipTests
+  build:
+    commands:
+      - echo " build is about to start"
+      - mvn package -DskipTests
+      - echo "Building Docker image..."
+      - docker build -t $DOCKER_HUB_REPO:latest .
+      - echo "docker login"
+      - echo $DOCKER_HUB_PASSWORD | docker login -u spencerxxxwb --password-stdin
+      - echo " pushing the image"
+      - docker push  $DOCKER_HUB_REPO:latest
+
+artifacts:
+  files:
+    - target/*.jar
